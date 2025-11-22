@@ -11,37 +11,53 @@ const loadVideos = () => {
         .then(data => showVideo(data.videos))
 }
 
+const loadCategoriesVideos = (id) => {
+    const url = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`
+    fetch(url)
+    .then(res => res.json())
+    .then(data => showVideo(data.category)); 
+
+}
+
 
 const showButtonCategories = (items) => {
+    
 
     const btnContainer = document.getElementById('button-container');
 
     items.forEach(item => {
-        const btn = document.createElement('button');
-        btn.classList.add('btn')
-        btn.classList.add('btn-soft')
-        btn.innerText = item.category;
-        btnContainer.appendChild(btn);
+        
+        const div = document.createElement('div'); 
+        div.innerHTML = `
+            <button onclick="loadCategoriesVideos(${item.category_id})" class="btn btn-soft">${item.category}</button>
+        `
+
+        btnContainer.append(div);
     })
 }
 
 
 const showVideo = (videos) => {
     const videoContainer = document.getElementById('video-container'); 
+    videoContainer.innerHTML = ''; 
     videos.forEach(video => {
-        console.log(video); 
+        // console.log(video); 
 
-        const card = `
+        const div = document.createElement('div'); 
+
+        div.innerHTML = `
              <div class="card bg-base-100 w-96 shadow-sm">
                 <figure>
                     <img src="${video.thumbnail}" alt="Shoes" />
                 </figure>
                 <div class="card-body flex flex-row gap-3">
-                    <div class="avatar">
-                        <div class="ring-primary ring-offset-base-100 w-24 rounded-full ring-2 ring-offset-2">
-                            <img src="${video.authors[0].profile_picture}" />
-                        </div>
-                    </div>
+                   
+                       
+                            <div>
+                            <img class="w-15 rounded-full" src="${video.authors[0].profile_picture}" />
+                            </div>
+                       
+                
                     <div>
                         <h2 class="text-xl font-bold">${video.title}</h2>
 
@@ -54,7 +70,7 @@ const showVideo = (videos) => {
     
         `
 
-        videoContainer.innerHTML = card; 
+        videoContainer.appendChild(div);
         
     })
 
