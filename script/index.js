@@ -15,8 +15,8 @@ const loadCategories = () => {
 }
 
 
-const loadVideos = () => {
-    fetch('https://openapi.programming-hero.com/api/phero-tube/videos')
+const loadVideos = (searchText = "") => {
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
         .then(res => res.json())
         .then(data => {
             removeActiveClass();
@@ -24,6 +24,27 @@ const loadVideos = () => {
             showVideo(data.videos)
         })
 }
+
+
+const displayVideoDetails = (video) => {
+    
+    document.getElementById('video_details').showModal(); 
+    const detailsContainer = document.getElementById('details'); 
+    detailsContainer.innerHTML = `
+        <h2 class="text-2xl">${video.video.description}</h2>
+    `
+}
+
+
+
+const loadVideoDetails =(id) => {
+    const url = `https://openapi.programming-hero.com/api/phero-tube/video/${id}`
+    fetch(url)
+    .then(res => res.json())
+    .then(data => displayVideoDetails(data))
+}
+
+
 
 const loadCategoriesVideos = (id) => {
     const url = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`
@@ -74,7 +95,7 @@ const showVideo = (videos) => {
 
 
     videos.forEach(video => {
-        // console.log(video); 
+        // console.log(video.video_id); 
 
         const div = document.createElement('div');
 
@@ -94,11 +115,12 @@ const showVideo = (videos) => {
                     <div>
                         <h2 class="text-xl font-bold">${video.title}</h2>
 
-                        <p class="flex gap-2.5">${video.authors[0].profile_name} <img class="w-5" src="./assets/463574.png" alt=""></p>
+                        <p class="flex gap-2.5">${video.authors[0].profile_name} ${video.authors[0].verified == true ? `<img class="w-5" src="./assets/463574.png" alt="">`: ''}</p>
 
                         <p>${video.others.views}</p>
                     </div>
                 </div>
+                <button class="btn btn-block" onclick="loadVideoDetails('${video.video_id}')">Show Details</button>
             </div>
     
         `
@@ -109,6 +131,16 @@ const showVideo = (videos) => {
 
 
 }
+
+document.getElementById('search-input').addEventListener('keyup', function(event) {
+    const input = event.target.value; 
+    
+    loadVideos(input); 
+    
+
+})
+
+
 
 loadCategories();
 loadVideos(); 
