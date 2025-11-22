@@ -11,6 +11,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <link rel="stylesheet" href="./input.css">
+    <style>
+        .active {
+            background-color: #FF1F3D;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
@@ -32,13 +38,15 @@
 
     <main>
         <div id="button-container" class="py-5 flex gap-4 justify-center">
-            <button class="btn btn-secondary" onclick="loadVideos()">All</button>
-            
+            <button id="all-btn" class="btn btn-soft" onclick="loadVideos()">All</button>
+
         </div>
 
-        <div id="video-container" class="w-11/12 mx-auto grid grid-cols-3">
-           
 
+
+        <div id="video-container" class="w-11/12 mx-auto grid grid-cols-3 ">
+
+            
         </div>
     </main>
 
